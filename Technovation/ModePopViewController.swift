@@ -18,6 +18,7 @@ class ModePopViewController : UIViewController{
     var mode = String()
     
     var keyWordIndex:Int?
+    var keyWord: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,7 +70,11 @@ class ModePopViewController : UIViewController{
         if segue.identifier == "popToEBLevel"{
             if let destVC = segue.destination as? GameViewController {
                 //depending on which one the user presses, sets keyword variable of GameViewController
-                destVC.keyWord = viewModel.levels[keyWordIndex!].keyWord
+                if let word = self.keyWord{
+                    destVC.keyWord = word
+                } else {
+                    destVC.keyWord = viewModel.levels[keyWordIndex!].keyWord
+                }
                 destVC.mode = "Easy bouncing"
                 print("EB segue called")
             }
@@ -77,7 +82,11 @@ class ModePopViewController : UIViewController{
         if segue.identifier == "popToFluencyLevel"{
             if let destVC = segue.destination as? GameViewController {
                 //depending on which one the user presses, sets keyword variable of GameViewController
-                destVC.keyWord = viewModel.levels[keyWordIndex!].keyWord
+                if let word = self.keyWord{
+                    destVC.keyWord = word
+                } else {
+                    destVC.keyWord = viewModel.levels[keyWordIndex!].keyWord
+                }
                 destVC.mode = "Fluency"
             }
         }
