@@ -18,10 +18,9 @@ class ChallengeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadDataIfNeeded() {success in
-        print ("Success")
+        loadDataIfNeeded() { didLoad in
+            print (didLoad)
         }
-        setupUI()
     }
     
     let defaults = UserDefaults.standard
@@ -50,6 +49,7 @@ class ChallengeViewController: UIViewController {
         } else {
             completionCheckBox.hideBox = true
             completionCheckBox.on = false
+            completionCheckBox.isEnabled = false
             completionNoticeLabel.text = "You already completed your challenge for today!"
             completionNoticeLabel.alpha = 1
             challengeLabel.alpha = 0
@@ -80,6 +80,7 @@ class ChallengeViewController: UIViewController {
                     } else {
                         print("Firestore points +5, now: \(newPoints)")
                         Constants.points = newPoints
+                        self.completionCheckBox.isEnabled = false
                     }
                 }
             }
@@ -87,22 +88,17 @@ class ChallengeViewController: UIViewController {
     }
     
 
-    func loadDataIfNeeded(completion: (Bool) -> Void) {
+    func loadDataIfNeeded(completion: (String) -> Void) {
 
         if isRefreshRequired() {
             // update the challenge
             defaults.set(Date(), forKey: defaultsKey)
-            challengeLabel.text = createChallenge()
-            //save data within location for access within the same day
-            defaults.set(challengeLabel.text, forKey: Constants.dailyChallengeKey)
-            //refresh checkbox memory
-            defaults.set(true, forKey: Constants.checkBoxKey)
-            print ("New Challenge")
-            completion(true)
+            getChallenge()
+            completion("no previous data exists")
         } else {
-            completion(false)
             challengeLabel.text = defaults.object(forKey: Constants.dailyChallengeKey) as? String
-            print ("No New Challenge, old challange shows")
+            setupUI()
+            completion("previous data exists")
         }
     }
 
@@ -120,14 +116,26 @@ class ChallengeViewController: UIViewController {
         }
     }
     
-    func createChallenge () -> String {
-        let challengeArray = [
-            "Talk to your parents about your favorite toy.",
-            "Talk to your parents about your favorite animal.",
-            "Describe your craziest dream to an adult.",
-            "Share your today's ups and downs with your parents."]
-        let randomInt = Int.random(in: 1..<4)
-        return challengeArray [randomInt]
+    func getChallenge(){    //grab challenges from Firebase
+        Firestore.firestore().settings = FirestoreSettings()
+        let db = Firestore.firestore()
+        
+        //get challenges from db
+        let docRef = db.collection("challenges").document("oneMonth")
+        var challenge: String = ""
+        docRef.getDocument { (document, error) in
+            if let document = document, document.exists {
+                if let challenges = document.data(){
+                    challenge = challenges.map{($0.key)}.randomElement()!
+                    self.challengeLabel.text = challenge
+                    //save data within location for access within the same day
+                    self.defaults.set(self.challengeLabel.text, forKey: Constants.dailyChallengeKey)
+                    //refresh checkbox memory
+                    self.defaults.set(true, forKey: Constants.checkBoxKey)
+                    self.setupUI()
+                }
+            }
+        }
     }
       
 }
