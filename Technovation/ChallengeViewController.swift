@@ -119,20 +119,25 @@ class ChallengeViewController: UIViewController {
     func getChallenge(){    //grab challenges from Firebase
         Firestore.firestore().settings = FirestoreSettings()
         let db = Firestore.firestore()
-        
+        var challengeArray: Array<String> = []
+        var randomNum = Int.random(in: 0..<30)
+        var challenge: String = ""
         //get challenges from db
         let docRef = db.collection("challenges").document("oneMonth")
-        var challenge: String = ""
         docRef.getDocument { (document, error) in
-            if let document = document, document.exists {
-                if let challenges = document.data(){
-                    challenge = challenges.map{($0.key)}.randomElement()!
+            if let error = error {
+                print("Error writing document: \(error)")
+            } else {
+                if let document = document, document.exists {
+                    challengeArray = (document.get("challenges") as? Array)!
+                    challenge = challengeArray[randomNum]
                     self.challengeLabel.text = challenge
                     //save data within location for access within the same day
                     self.defaults.set(self.challengeLabel.text, forKey: Constants.dailyChallengeKey)
                     //refresh checkbox memory
                     self.defaults.set(true, forKey: Constants.checkBoxKey)
                     self.setupUI()
+                    
                 }
             }
         }

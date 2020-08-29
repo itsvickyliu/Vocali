@@ -13,7 +13,6 @@ class StandardViewModel:NSObject{
     lazy var levels = [
         StandardLevel(keyWord: "cat"),
         StandardLevel(keyWord: "egg"),
-        StandardLevel(keyWord: "bin"),
         StandardLevel(keyWord: "top"),
         StandardLevel(keyWord: "cut"),
         StandardLevel(keyWord: "why"),
