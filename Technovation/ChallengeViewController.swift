@@ -16,11 +16,14 @@ class ChallengeViewController: UIViewController {
     @IBOutlet weak var completionCheckBox: BEMCheckBox!
     @IBOutlet weak var completionNoticeLabel: UILabel!
     
+    var wordBank = String()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         loadDataIfNeeded() { didLoad in
             print (didLoad)
         }
+        generateWord()
     }
     
     let defaults = UserDefaults.standard
@@ -116,7 +119,8 @@ class ChallengeViewController: UIViewController {
         }
     }
     
-    func getChallenge(){    //grab challenges from Firebase
+    func getChallenge(){
+        //grab challenges from Firebase
         Firestore.firestore().settings = FirestoreSettings()
         let db = Firestore.firestore()
         var challengeArray: Array<String> = []
@@ -131,7 +135,12 @@ class ChallengeViewController: UIViewController {
                 if let document = document, document.exists {
                     challengeArray = (document.get("challenges") as? Array)!
                     challenge = challengeArray[randomNum]
+                    if randomNum == 19 {
+                        self.challengeLabel.text = (challenge.prefix(14) + self.wordBank + challenge.suffix(66))
+                    }
+                    else {
                     self.challengeLabel.text = challenge
+                    }
                     //save data within location for access within the same day
                     self.defaults.set(self.challengeLabel.text, forKey: Constants.dailyChallengeKey)
                     //refresh checkbox memory
@@ -142,5 +151,30 @@ class ChallengeViewController: UIViewController {
             }
         }
     }
-      
+    
+    func generateWord(){
+        let db = Firestore.firestore()
+        var nounArray: Array<String> = []
+        var verbArray: Array<String> = []
+        var adjArray: Array<String> = []
+        var noun: String = ""
+        var verb: String = ""
+        var adj: String = ""
+        let docRef = db.collection("challenges").document("wordBank")
+        docRef.getDocument { (document, error) in
+            if let error = error {
+                print("Error writing document: \(error)")
+            } else {
+                if let document = document, document.exists {
+                    nounArray = (document.get("noun") as? Array)!
+                    verbArray = (document.get("verb") as? Array)!
+                    adjArray = (document.get("adj") as? Array)!
+                    noun = nounArray[Int.random(in: 0..<10)]
+                    verb = verbArray[Int.random(in: 0..<10)]
+                    adj = adjArray[Int.random(in: 0..<10)]
+                    self.wordBank = "\"" + noun + "\", \"" + verb + "\", and \"" + adj + "\""
+                }
+            }
+        }
+    }
 }
