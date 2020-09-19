@@ -53,6 +53,7 @@ public class SBSpeechRecognizer: NSObject, SFSpeechRecognizerDelegate {
             if mode == "Easy bouncing" {
                 if let result = result {
                     let text = result.bestTranscription.formattedString
+                    print (text)
                     if text != "" {
                         self.delegate.jump()
                     }
@@ -64,6 +65,7 @@ public class SBSpeechRecognizer: NSObject, SFSpeechRecognizerDelegate {
                     let resultArr = result.bestTranscription.formattedString.components(separatedBy: " ")
                     let n = resultArr.count
                     let text: String = resultArr[n-1]
+                    print (text)
                     if text.lowercased() == keyWord {
                         self.delegate.jump()
                     }

@@ -21,7 +21,7 @@ class MainViewController : UIViewController, UNUserNotificationCenterDelegate {
         guard customWordTextField.text != "" else {return}
         customWordTextField.resignFirstResponder()
         let modePopup = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "ModePopVC") as! ModePopViewController
-        modePopup.keyWord = customWordTextField.text
+        modePopup.keyWord = customWordTextField.text?.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
         present(modePopup, animated: true, completion: nil)
     }
     
