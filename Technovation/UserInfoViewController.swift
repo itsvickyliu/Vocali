@@ -111,7 +111,7 @@ class UserInfoViewController : UIViewController, UITextFieldDelegate, UICollecti
     override func viewDidLayoutSubviews() {
         let frameY = (view.window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0.0) +
             (self.navigationController?.navigationBar.frame.height ?? 0.0)
-        collectionView?.frame = CGRect(x: view.frame.size.width-100, y: frameY, width: 100, height: view.frame.size.height).integral
+        collectionView?.frame = CGRect(x: view.frame.size.width-100, y: frameY, width: 100, height: view.frame.size.height - frameY).integral
     }
     
     func setupUI(){
