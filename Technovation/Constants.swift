@@ -14,6 +14,10 @@ struct Constants {
     //when this is true = checkbox is unchecked for the day
     static let checkBoxKey = "kCheckBox"
     
+    static let suggestionKey = "kSuggestion"
+    
+    static let isHidden = "kHidden"
+    
     
     //user personal info, refreshed every time app opens
     static var points: Int?
