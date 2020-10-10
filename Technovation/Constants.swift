@@ -18,7 +18,6 @@ struct Constants {
     
     static let isHidden = "kHidden"
     
-    
     //user personal info, refreshed every time app opens
     static var points: Int?
     static var uID: String?

@@ -109,8 +109,8 @@ class ChallengeViewController: UIViewController {
             getChallenge()
             completion("no previous data exists")
         } else {
-            challengeLabel.text = defaults.object(forKey: Constants.dailyChallengeKey) as? String
-            suggestionLabel.text = defaults.object(forKey: Constants.suggestionKey) as? String
+            challengeLabel.text = defaults.string(forKey: Constants.dailyChallengeKey)
+            suggestionLabel.text = defaults.string(forKey: Constants.suggestionKey)
             self.scrollView.isHidden = self.defaults.object(forKey: Constants.isHidden) as! Bool
             setupUI()
             completion("previous data exists")
