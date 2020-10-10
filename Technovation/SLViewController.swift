@@ -40,6 +40,7 @@ class SLViewController : UIViewController{
             docRef.getDocument { (document, error) in
                 if let document = document, document.exists {
                     Constants.points = document.get("points") as? Int
+                    Constants.purchasedItem = document.get("purchasedItem") as? Array ?? ["face1", "head1"]
                     /*
                     Constants.avatarName = document.get("avatarName") as? String
                     print("Document data: points \(String(describing: Constants.points)), avatarName \(String(describing: Constants.avatarName))")

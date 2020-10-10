@@ -17,6 +17,7 @@ class UserInfoViewController : UIViewController, UITextFieldDelegate, UICollecti
     private var collectionView: UICollectionView?
     private var items = Item.items
     private var cell = ItemCollectionViewCell()
+    let defaults = UserDefaults.standard
     
     var hairImageView: UIImageView = {
         let imageView = UIImageView()
