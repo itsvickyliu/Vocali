@@ -22,7 +22,9 @@ struct Constants {
     //user personal info, refreshed every time app opens
     static var points: Int?
     static var uID: String?
+    static var purchasedItem: Array<String> = ["face1", "head1"]
 //    static var avatarName: String?
+    
     
     //UI design constants
     static var cornerR : CGFloat = 20

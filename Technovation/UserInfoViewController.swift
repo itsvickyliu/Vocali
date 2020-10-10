@@ -16,6 +16,13 @@ class UserInfoViewController : UIViewController, UITextFieldDelegate, UICollecti
     @IBOutlet weak var pointsLabel: UILabel!
     private var collectionView: UICollectionView?
     private var items = Item.items
+    private var cell = ItemCollectionViewCell()
+    
+    var hairImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        return imageView
+    }()
     
     var faceImageView: UIImageView = {
         let imageView = UIImageView()
@@ -42,14 +49,14 @@ class UserInfoViewController : UIViewController, UITextFieldDelegate, UICollecti
         return imageView
     }()
     
-    var hatImageView: UIImageView = {
+    var headImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
-        imageView.image = UIImage(named: "hat1")
+        imageView.image = UIImage(named: "head1")
         return imageView
     }()
     
-    var scarfImageView: UIImageView = {
+    var neckImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         return imageView
@@ -62,12 +69,6 @@ class UserInfoViewController : UIViewController, UITextFieldDelegate, UICollecti
     }()
     
     var eyeglassesImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
-        return imageView
-    }()
-    
-    var accessoryImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         return imageView
@@ -100,10 +101,10 @@ class UserInfoViewController : UIViewController, UITextFieldDelegate, UICollecti
         view.addSubview(pantsImageView)
         view.addSubview(shirtImageView)
         view.addSubview(shoesImageView)
-        view.addSubview(hatImageView)
-        view.addSubview(scarfImageView)
+        view.addSubview(neckImageView)
+        view.addSubview(hairImageView)
+        view.addSubview(headImageView)
         view.addSubview(eyeglassesImageView)
-        view.addSubview(accessoryImageView)
         
         addConstraints()
     }
@@ -122,21 +123,26 @@ class UserInfoViewController : UIViewController, UITextFieldDelegate, UICollecti
     
     func addConstraints() {
         userIconImageView.translatesAutoresizingMaskIntoConstraints = false
+        hairImageView.translatesAutoresizingMaskIntoConstraints = false
         faceImageView.translatesAutoresizingMaskIntoConstraints = false
         shirtImageView.translatesAutoresizingMaskIntoConstraints = false
         pantsImageView.translatesAutoresizingMaskIntoConstraints = false
         shoesImageView.translatesAutoresizingMaskIntoConstraints = false
-        hatImageView.translatesAutoresizingMaskIntoConstraints = false
-        scarfImageView.translatesAutoresizingMaskIntoConstraints = false
+        headImageView.translatesAutoresizingMaskIntoConstraints = false
+        neckImageView.translatesAutoresizingMaskIntoConstraints = false
         wingsImageView.translatesAutoresizingMaskIntoConstraints = false
         eyeglassesImageView.translatesAutoresizingMaskIntoConstraints = false
-        accessoryImageView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             userIconImageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: -50),
             userIconImageView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -view.frame.height/30),
             userIconImageView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.75),
             userIconImageView.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.75),
+            
+            hairImageView.centerXAnchor.constraint(equalTo: userIconImageView.centerXAnchor),
+            hairImageView.centerYAnchor.constraint(equalTo: userIconImageView.centerYAnchor),
+            hairImageView.topAnchor.constraint(equalTo: userIconImageView.topAnchor),
+            hairImageView.leftAnchor.constraint(equalTo: userIconImageView.leftAnchor),
             
             faceImageView.centerXAnchor.constraint(equalTo: userIconImageView.centerXAnchor),
             faceImageView.centerYAnchor.constraint(equalTo: userIconImageView.centerYAnchor),
@@ -158,15 +164,15 @@ class UserInfoViewController : UIViewController, UITextFieldDelegate, UICollecti
             shoesImageView.topAnchor.constraint(equalTo: userIconImageView.topAnchor),
             shoesImageView.leftAnchor.constraint(equalTo: userIconImageView.leftAnchor),
             
-            hatImageView.centerXAnchor.constraint(equalTo: userIconImageView.centerXAnchor),
-            hatImageView.centerYAnchor.constraint(equalTo: userIconImageView.centerYAnchor),
-            hatImageView.topAnchor.constraint(equalTo: userIconImageView.topAnchor),
-            hatImageView.leftAnchor.constraint(equalTo: userIconImageView.leftAnchor),
+            headImageView.centerXAnchor.constraint(equalTo: userIconImageView.centerXAnchor),
+            headImageView.centerYAnchor.constraint(equalTo: userIconImageView.centerYAnchor),
+            headImageView.topAnchor.constraint(equalTo: userIconImageView.topAnchor),
+            headImageView.leftAnchor.constraint(equalTo: userIconImageView.leftAnchor),
             
-            scarfImageView.centerXAnchor.constraint(equalTo: userIconImageView.centerXAnchor),
-            scarfImageView.centerYAnchor.constraint(equalTo: userIconImageView.centerYAnchor),
-            scarfImageView.topAnchor.constraint(equalTo: userIconImageView.topAnchor),
-            scarfImageView.leftAnchor.constraint(equalTo: userIconImageView.leftAnchor),
+            neckImageView.centerXAnchor.constraint(equalTo: userIconImageView.centerXAnchor),
+            neckImageView.centerYAnchor.constraint(equalTo: userIconImageView.centerYAnchor),
+            neckImageView.topAnchor.constraint(equalTo: userIconImageView.topAnchor),
+            neckImageView.leftAnchor.constraint(equalTo: userIconImageView.leftAnchor),
             
             wingsImageView.centerXAnchor.constraint(equalTo: userIconImageView.centerXAnchor),
             wingsImageView.centerYAnchor.constraint(equalTo: userIconImageView.centerYAnchor),
@@ -176,12 +182,7 @@ class UserInfoViewController : UIViewController, UITextFieldDelegate, UICollecti
             eyeglassesImageView.centerXAnchor.constraint(equalTo: userIconImageView.centerXAnchor),
             eyeglassesImageView.centerYAnchor.constraint(equalTo: userIconImageView.centerYAnchor),
             eyeglassesImageView.topAnchor.constraint(equalTo: userIconImageView.topAnchor),
-            eyeglassesImageView.leftAnchor.constraint(equalTo: userIconImageView.leftAnchor),
-            
-            accessoryImageView.centerXAnchor.constraint(equalTo: userIconImageView.centerXAnchor),
-            accessoryImageView.centerYAnchor.constraint(equalTo: userIconImageView.centerYAnchor),
-            accessoryImageView.topAnchor.constraint(equalTo: userIconImageView.topAnchor),
-            accessoryImageView.leftAnchor.constraint(equalTo: userIconImageView.leftAnchor)
+            eyeglassesImageView.leftAnchor.constraint(equalTo: userIconImageView.leftAnchor)
         ])
     }
     
@@ -190,16 +191,20 @@ class UserInfoViewController : UIViewController, UITextFieldDelegate, UICollecti
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ItemCollectionViewCell.identifier, for: indexPath) as! ItemCollectionViewCell
+        cell = collectionView.dequeueReusableCell(withReuseIdentifier: ItemCollectionViewCell.identifier, for: indexPath) as! ItemCollectionViewCell
         let item = items[indexPath.row]
-        guard let image = item.thumbnailImage else { return cell }
-        cell.configure(with: image)
+        guard let cellImage = item.thumbnailImage else { return cell }
+        let cellPoint = item.point
+        let cellName = item.name
+        cell.configure(name: cellName, image: cellImage, point: cellPoint)
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let item = items[indexPath.row]
         switch item.type {
+        case .hair:
+            hairImageView.image = item.image
         case .face:
             faceImageView.image = item.image
         case .shirt:
@@ -208,16 +213,49 @@ class UserInfoViewController : UIViewController, UITextFieldDelegate, UICollecti
             pantsImageView.image = item.image
         case .shoes:
             shoesImageView.image = item.image
-        case .hat:
-            hatImageView.image = item.image
-        case .scarf:
-            scarfImageView.image = item.image
+        case .head:
+            headImageView.image = item.image
+        case .neck:
+            neckImageView.image = item.image
         case .wings:
             wingsImageView.image = item.image
         case .eyeglasses:
             eyeglassesImageView.image = item.image
-        case .accessory:
-            accessoryImageView.image = item.image
+        }
+    
+        let db = Firestore.firestore()
+        
+        //get no of points from Firestore to local storage
+        let docRef = db.collection("users").document(Constants.uID!)
+        docRef.getDocument { (document, error) in
+            if let document = document, document.exists {
+                //update purchased items after purchase
+                var newPurchase = Constants.purchasedItem
+                if !newPurchase.contains(item.name) {
+                    newPurchase.append(item.name)
+                    //update point after purchase
+                    let newPoints = (Constants.points ?? 0) - item.point
+                    db.collection("users").document(Constants.uID!).updateData([
+                        "purchasedItem": newPurchase
+                    ])
+                    db.collection("users").document(Constants.uID!).updateData([
+                        "points": newPoints
+                    ]){ err in
+                        if let err = err {
+                            print("Error writing document: \(err)")
+                        } else {
+                            print("Purchase made, now: \(newPoints)")
+                            self.pointsLabel.text = "You have \(newPoints) points!"
+                            Constants.points = newPoints
+                            print ("purchased \(item.name)")
+                            Constants.purchasedItem = newPurchase
+                            collectionView.reloadData()
+                        }
+                    }
+                }
+            } else {
+                print("Document does not exist")
+            }
         }
     }
 }

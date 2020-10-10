@@ -7,14 +7,13 @@
 //
 
 enum ItemType: String {
-    //case avatar
+    case hair
     case face
     case shirt
     case pants
     case shoes
-    case hat
-    case scarf
+    case head
+    case neck
     case wings
     case eyeglasses
-    case accessory
 }

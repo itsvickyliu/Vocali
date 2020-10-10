@@ -137,8 +137,7 @@ class ChallengeViewController: UIViewController {
         let db = Firestore.firestore()
         var challengeArray: Array<String> = []
         var suggestionArray: Array<String> = []
-        //let randomNum = Int.random(in: 0..<30)
-        let randomNum = 14
+        let randomNum = Int.random(in: 0..<30)
         var challenge: String = ""
         //get challenges from db
         let docRef = db.collection("challenges").document("oneMonth")
