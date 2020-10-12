@@ -41,6 +41,9 @@ class SLViewController : UIViewController{
                 if let document = document, document.exists {
                     Constants.points = document.get("points") as? Int
                     Constants.purchasedItem = document.get("purchasedItem") as? Array ?? ["face1", "head1"]
+                    Constants.wearingItem = document.get("wearingItem") as? [String: String] ?? [Item.items[2].type.rawValue: Item.items[2].name, Item.items[12].type.rawValue: Item.items[12].name]
+                    
+                    print("wearingItems = ", Constants.wearingItem)
                     /*
                     Constants.avatarName = document.get("avatarName") as? String
                     print("Document data: points \(String(describing: Constants.points)), avatarName \(String(describing: Constants.avatarName))")

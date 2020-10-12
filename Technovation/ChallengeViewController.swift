@@ -37,7 +37,7 @@ class ChallengeViewController: UIViewController {
     func setupUI(){
         //set up challengeLabel
         challengeLabel.font = UIFont(name: "FredokaOne-Regular", size: 30)
-        challengeLabel.textColor = UIColor(cgColor: Constants.red)
+        challengeLabel.textColor = .white
         
         //set up suggestionLabel
         suggestionLabel.font = UIFont(name: "FredokaOne-Regular", size: 20)
@@ -137,7 +137,8 @@ class ChallengeViewController: UIViewController {
         let db = Firestore.firestore()
         var challengeArray: Array<String> = []
         var suggestionArray: Array<String> = []
-        let randomNum = Int.random(in: 0..<30)
+        //let randomNum = Int.random(in: 0..<30)
+        let randomNum = 18
         var challenge: String = ""
         //get challenges from db
         let docRef = db.collection("challenges").document("oneMonth")

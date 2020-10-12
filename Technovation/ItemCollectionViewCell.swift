@@ -75,7 +75,8 @@ class ItemCollectionViewCell: UICollectionViewCell {
         }
         else {
             pointLabel.isHidden = false
-            pointLabel.backgroundColor = UIColor(cgColor: Constants.blue)
+            pointLabel.backgroundColor = UIColor(red: 143/255.0, green: 84/255.0, blue: 49/255.0, alpha: 1)
+            //UIColor(red: 141/255.0, green: 189/255.0, blue: 243/255.0, alpha: 1)
             self.isUserInteractionEnabled = true
         }
     }

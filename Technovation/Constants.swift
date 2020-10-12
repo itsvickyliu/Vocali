@@ -22,6 +22,7 @@ struct Constants {
     static var points: Int?
     static var uID: String?
     static var purchasedItem: Array<String> = []
+    static var wearingItem: [String: String] = [:]
 //    static var avatarName: String?
     
     

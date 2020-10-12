@@ -20,57 +20,100 @@ class UserInfoViewController : UIViewController, UITextFieldDelegate, UICollecti
     let defaults = UserDefaults.standard
     
     var hairImageView: UIImageView = {
-        let imageView = UIImageView()
+        var imageView = UIImageView()
+        let imageName = Constants.wearingItem["hair"]
+        if imageName != nil{
+            print("set hair")
+            imageView.image = UIImage(named: imageName!)
+        }
         imageView.contentMode = .scaleAspectFit
         return imageView
     }()
     
     var faceImageView: UIImageView = {
         let imageView = UIImageView()
+        let imageName = Constants.wearingItem["face"]
+        if imageName != nil{
+            print("set face")
+            imageView.image = UIImage(named: imageName!)
+        }
         imageView.contentMode = .scaleAspectFit
-        imageView.image = UIImage(named: "face1")
         return imageView
     }()
     
     var shirtImageView: UIImageView = {
         let imageView = UIImageView()
+        let imageName = Constants.wearingItem["shirt"]
+        if imageName != nil{
+            print("set shirt")
+            imageView.image = UIImage(named: imageName!)
+        }
         imageView.contentMode = .scaleAspectFit
         return imageView
     }()
     
     var pantsImageView: UIImageView = {
         let imageView = UIImageView()
+        let imageName = Constants.wearingItem["pants"]
+        if imageName != nil{
+            print("set pants")
+            imageView.image = UIImage(named: imageName!)
+        }
         imageView.contentMode = .scaleAspectFit
         return imageView
     }()
 
     var shoesImageView: UIImageView = {
         let imageView = UIImageView()
+        let imageName = Constants.wearingItem["shoes"]
+        if imageName != nil{
+            print("set shoes")
+            imageView.image = UIImage(named: imageName!)
+        }
         imageView.contentMode = .scaleAspectFit
         return imageView
     }()
     
     var headImageView: UIImageView = {
         let imageView = UIImageView()
+        let imageName = Constants.wearingItem["head"]
+        if imageName != nil{
+            print("set head")
+            imageView.image = UIImage(named: imageName!)
+        }
         imageView.contentMode = .scaleAspectFit
-        imageView.image = UIImage(named: "head1")
         return imageView
     }()
     
     var neckImageView: UIImageView = {
         let imageView = UIImageView()
+        let imageName = Constants.wearingItem["neck"]
+        if imageName != nil{
+            print("set neck")
+            imageView.image = UIImage(named: imageName!)
+        }
         imageView.contentMode = .scaleAspectFit
         return imageView
     }()
     
     var wingsImageView: UIImageView = {
         let imageView = UIImageView()
+        let imageName = Constants.wearingItem["wings"]
+        if imageName != nil{
+            print("set wings")
+            imageView.image = UIImage(named: imageName!)
+        }
         imageView.contentMode = .scaleAspectFit
         return imageView
     }()
     
     var eyeglassesImageView: UIImageView = {
         let imageView = UIImageView()
+        let imageName = Constants.wearingItem["eyeglasses"]
+        if imageName != nil{
+            print("set eyeglasses")
+            imageView.image = UIImage(named: imageName!)
+        }
         imageView.contentMode = .scaleAspectFit
         return imageView
     }()
@@ -78,6 +121,11 @@ class UserInfoViewController : UIViewController, UITextFieldDelegate, UICollecti
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        
+        //optional: reorder by price
+        items.sort(by: {
+            $0.point < $1.point
+        })
         
         //self.edgesForExtendedLayout = .bottom
         
@@ -95,7 +143,6 @@ class UserInfoViewController : UIViewController, UITextFieldDelegate, UICollecti
         guard let myCollection = collectionView else {
             return
         }
-        print(myCollection.frame)
         view.addSubview(myCollection)
         view.addSubview(faceImageView)
         view.addSubview(wingsImageView)
@@ -117,7 +164,8 @@ class UserInfoViewController : UIViewController, UITextFieldDelegate, UICollecti
     }
     
     func setupUI(){
-        pointsLabel.text = "You have \(Constants.points ?? 0) points!"
+        navigationController?.navigationBar.backgroundColor = .clear
+        pointsLabel.text = "Points: \(Constants.points ?? 0)"
         pointsLabel.font = UIFont(name: "FredokaOne-Regular", size: 25)
         pointsLabel.textColor = UIColor(cgColor: Constants.red)
     }
@@ -203,26 +251,69 @@ class UserInfoViewController : UIViewController, UITextFieldDelegate, UICollecti
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let item = items[indexPath.row]
-        switch item.type {
-        case .hair:
-            hairImageView.image = item.image
-        case .face:
-            faceImageView.image = item.image
-        case .shirt:
-            shirtImageView.image = item.image
-        case .pants:
-            pantsImageView.image = item.image
-        case .shoes:
-            shoesImageView.image = item.image
-        case .head:
-            headImageView.image = item.image
-        case .neck:
-            neckImageView.image = item.image
-        case .wings:
-            wingsImageView.image = item.image
-        case .eyeglasses:
-            eyeglassesImageView.image = item.image
+        
+        //if select the exact same item, return empty imageView EXCEPT face
+        if Constants.wearingItem.values.contains(item.name) && item.type.rawValue != "face"{
+            print("select the exact same item")
+            Constants.wearingItem.removeValue(forKey: item.type.rawValue)
+        } else {
+            Constants.wearingItem[item.type.rawValue] = item.name
         }
+        
+        switch item.type {
+            case .hair:
+                if Constants.wearingItem[item.type.rawValue] != nil{
+                    hairImageView.image = item.image
+                } else {
+                    hairImageView.image = nil
+                }
+            case .face:
+                faceImageView.image = item.image
+            case .shirt:
+                if Constants.wearingItem[item.type.rawValue] != nil{
+                    shirtImageView.image = item.image
+                } else {
+                    shirtImageView.image = nil
+                }
+            case .pants:
+                if Constants.wearingItem[item.type.rawValue] != nil{
+                    pantsImageView.image = item.image
+                } else {
+                    pantsImageView.image = nil
+                }
+            case .shoes:
+                if Constants.wearingItem[item.type.rawValue] != nil{
+                    shoesImageView.image = item.image
+                } else {
+                    shoesImageView.image = nil
+                }
+            case .head:
+                if Constants.wearingItem[item.type.rawValue] != nil{
+                    headImageView.image = item.image
+                } else {
+                    headImageView.image = nil
+                }
+            case .neck:
+                if Constants.wearingItem[item.type.rawValue] != nil{
+                    neckImageView.image = item.image
+                } else {
+                    neckImageView.image = nil
+                }
+            case .wings:
+                if Constants.wearingItem[item.type.rawValue] != nil{
+                    wingsImageView.image = item.image
+                } else {
+                    wingsImageView.image = nil
+                }
+            case .eyeglasses:
+                if Constants.wearingItem[item.type.rawValue] != nil{
+                    eyeglassesImageView.image = item.image
+                } else {
+                    eyeglassesImageView.image = nil
+                }
+        }
+        
+        print("updated wearingItem: ", Constants.wearingItem)
     
         let db = Firestore.firestore()
         
@@ -230,6 +321,16 @@ class UserInfoViewController : UIViewController, UITextFieldDelegate, UICollecti
         let docRef = db.collection("users").document(Constants.uID!)
         docRef.getDocument { (document, error) in
             if let document = document, document.exists {
+                //update wearingItems after change in clothes
+                db.collection("users").document(Constants.uID!).updateData([
+                    "wearingItem": Constants.wearingItem
+                ]){ err in
+                    if let err = err {
+                        print("Error writing document: \(err)")
+                    } else {
+                        print("wearingItem updated")
+                    }
+                }
                 //update purchased items after purchase
                 var newPurchase = Constants.purchasedItem
                 if !newPurchase.contains(item.name) {
