@@ -31,6 +31,11 @@ class SLViewController : UIViewController, UIGestureRecognizerDelegate{
         formatTextField(textField: emailTextField, placeholder: "email")
         formatTextField(textField: passwordTextField, placeholder: "password")
         formatButton(button: signUpButton)
+        
+        let leftButton = UIBarButtonItem(title: "", style: .plain, target: self, action: #selector(popToPrevious))
+        leftButton.image = UIImage(systemName: "chevron.left", withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold))
+        leftButton.tintColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        self.navigationItem.leftBarButtonItem = leftButton
     }
     
     @objc private func popToPrevious() {

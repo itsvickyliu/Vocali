@@ -178,9 +178,18 @@ class UserInfoViewController : UIViewController, UITextFieldDelegate, UICollecti
             .foregroundColor: UIColor.white,
             .font: UIFont(name: "FredokaOne-Regular", size: 20)!
         ]
+        let leftButton = UIBarButtonItem(title: "", style: .plain, target: self, action: #selector(popToPrevious))
+        leftButton.image = UIImage(systemName: "chevron.left", withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold))
+        leftButton.tintColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        self.navigationItem.leftBarButtonItem = leftButton
+        
         pointsLabel.text = "Points: \(Constants.points ?? 0)"
         pointsLabel.font = UIFont(name: "NanumPen", size: 35)
         pointsLabel.textColor = UIColor(cgColor: Constants.red)
+    }
+    
+    @objc private func popToPrevious() {
+        navigationController?.popViewController(animated: true)
     }
     
     func addConstraints() {

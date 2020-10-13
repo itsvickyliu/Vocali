@@ -28,11 +28,20 @@ class ChallengeViewController: UIViewController {
             print (didLoad)
         }
         generateWord()
+        
+        let leftButton = UIBarButtonItem(title: "", style: .plain, target: self, action: #selector(popToPrevious))
+        leftButton.image = UIImage(systemName: "chevron.left", withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold))
+        leftButton.tintColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        self.navigationItem.leftBarButtonItem = leftButton
     }
     
     let defaults = UserDefaults.standard
     let defaultsKey = "lastRefresh"
     let calender = Calendar.current
+    
+    @objc private func popToPrevious() {
+        navigationController?.popViewController(animated: true)
+    }
     
     func setupUI(){
         self.view.backgroundColor = UIColor(cgColor: Constants.blue)

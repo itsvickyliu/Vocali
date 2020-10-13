@@ -17,5 +17,14 @@ class EducationViewController : UIViewController{
             let request = URLRequest(url: url)
             webView.load(request)
         }
+        
+        let leftButton = UIBarButtonItem(title: "", style: .plain, target: self, action: #selector(popToPrevious))
+        leftButton.image = UIImage(systemName: "chevron.left", withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold))
+        leftButton.tintColor = UIColor(cgColor: Constants.blue)
+        self.navigationItem.leftBarButtonItem = leftButton
+    }
+    
+    @objc private func popToPrevious() {
+        navigationController?.popViewController(animated: true)
     }
 }
