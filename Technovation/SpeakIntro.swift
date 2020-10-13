@@ -23,14 +23,18 @@ class CanSpeak: NSObject, AVSpeechSynthesizerDelegate {
         super.init()
         self.voiceSynth.delegate = self
      }
+    
+    func sayThis(_ keyWord: String){
+        let utterance = AVSpeechUtterance(string: "Repeat after me: \(keyWord)")
+        utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
+        voiceSynth.speak(utterance)
+    }
+    
+    func voluntarySpeech() {
 
-   func sayThis(_ keyWord: String){
-      let utterance = AVSpeechUtterance(string: "Repeat after me: \(keyWord)")
-      utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
-      voiceSynth.speak(utterance)
-   }
-
-   func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
-      self.delegate.speechDidFinish()
-   }
+    }
+    
+    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
+        self.delegate.speechDidFinish()
+    }
 }

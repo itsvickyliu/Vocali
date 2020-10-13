@@ -360,7 +360,7 @@ class UserInfoViewController : UIViewController, UITextFieldDelegate, UICollecti
                             print("Error writing document: \(err)")
                         } else {
                             print("Purchase made, now: \(newPoints)")
-                            self.pointsLabel.text = "You have \(newPoints) points!"
+                            self.pointsLabel.text = "Points: \(newPoints)"
                             Constants.points = newPoints
                             print ("purchased \(item.name)")
                             Constants.purchasedItem = newPurchase
