@@ -16,6 +16,7 @@ class LoginViewController:UIViewController{
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var loginButton: UIButton!
+    @IBOutlet weak var signupButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,12 +25,39 @@ class LoginViewController:UIViewController{
         let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
         self.view.addGestureRecognizer(tap)
         self.navigationController?.setNavigationBarHidden(false, animated: true)
+        
+        Auth.auth().addStateDidChangeListener { auth, user in
+          if let user = user {
+            print("automatically signed in with UID: \(user.uid)")
+            Constants.uID = user.uid
+            Firestore.firestore().settings = FirestoreSettings()
+            let db = Firestore.firestore()
+            let docRef = db.collection("users").document(Constants.uID!)
+            docRef.getDocument { (document, error) in
+                if let document = document, document.exists {
+                    Constants.points = document.get("points") as? Int
+                    Constants.purchasedItem = document.get("purchasedItem") as? Array ?? ["face1", "head1"]
+                    Constants.wearingItem = document.get("wearingItem") as? [String: String] ?? [Item.items[2].type.rawValue: Item.items[2].name, Item.items[12].type.rawValue: Item.items[12].name]
+                    
+                    print("wearingItems = ", Constants.wearingItem)
+                    /*
+                    Constants.avatarName = document.get("avatarName") as? String
+                    print("Document data: points \(String(describing: Constants.points)), avatarName \(String(describing: Constants.avatarName))")
+                    */
+                } else {
+                    print("Document does not exist")
+                }
+            }
+            self.transitionToHome()
+          }
+        }
     }
     
     func formatUI(){
         formatTextField(textField: emailTextField, placeholder: "email")
         formatTextField(textField: passwordTextField, placeholder: "password")
         formatButton(button: loginButton)
+        formatButton(button: signupButton)
     }
     
     @IBAction func didLogin(_ sender: Any) {
@@ -65,6 +93,7 @@ class LoginViewController:UIViewController{
             }
         }
     }
+    
     func transitionToHome(){
         let tableViewController = storyboard?.instantiateViewController(identifier: "MainVC")
         let nav = UINavigationController()

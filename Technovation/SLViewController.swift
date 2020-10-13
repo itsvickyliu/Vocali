@@ -12,14 +12,10 @@ import Firebase
 
 class SLViewController : UIViewController{
     
-    @IBOutlet weak var logo: UIImageView!
-    
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var errorLabel: UILabel!
-    
     @IBOutlet weak var signUpButton: UIButton!
-    @IBOutlet weak var loginButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,41 +24,12 @@ class SLViewController : UIViewController{
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         formatUI()
         errorLabel.alpha = 0
-        
-        
-        Auth.auth().addStateDidChangeListener { auth, user in
-          if let user = user {
-            print("automatically signed in with UID: \(user.uid)")
-            Constants.uID = user.uid
-            Firestore.firestore().settings = FirestoreSettings()
-            let db = Firestore.firestore()
-            let docRef = db.collection("users").document(Constants.uID!)
-            docRef.getDocument { (document, error) in
-                if let document = document, document.exists {
-                    Constants.points = document.get("points") as? Int
-                    Constants.purchasedItem = document.get("purchasedItem") as? Array ?? ["face1", "head1"]
-                    Constants.wearingItem = document.get("wearingItem") as? [String: String] ?? [Item.items[2].type.rawValue: Item.items[2].name, Item.items[12].type.rawValue: Item.items[12].name]
-                    
-                    print("wearingItems = ", Constants.wearingItem)
-                    /*
-                    Constants.avatarName = document.get("avatarName") as? String
-                    print("Document data: points \(String(describing: Constants.points)), avatarName \(String(describing: Constants.avatarName))")
-                    */
-                } else {
-                    print("Document does not exist")
-                }
-            }
-            self.transitionToHome()
-          }
-        }
     }
     
     func formatUI(){
-        logo.roundCornersForAspectFit(radius: Constants.cornerR)
         formatTextField(textField: emailTextField, placeholder: "email")
         formatTextField(textField: passwordTextField, placeholder: "password")
         formatButton(button: signUpButton)
-        formatButton(button: loginButton)
     }
     
     @IBAction func didCreateAccount(_ sender: Any) {
