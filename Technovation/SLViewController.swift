@@ -10,12 +10,13 @@ import UIKit
 import FirebaseAuth
 import Firebase
 
-class SLViewController : UIViewController{
+class SLViewController : UIViewController, UIGestureRecognizerDelegate{
     
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var errorLabel: UILabel!
     @IBOutlet weak var signUpButton: UIButton!
+    @IBOutlet weak var navBar: UINavigationItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,6 +31,10 @@ class SLViewController : UIViewController{
         formatTextField(textField: emailTextField, placeholder: "email")
         formatTextField(textField: passwordTextField, placeholder: "password")
         formatButton(button: signUpButton)
+    }
+    
+    @objc private func popToPrevious() {
+        navigationController?.popViewController(animated: true)
     }
     
     @IBAction func didCreateAccount(_ sender: Any) {

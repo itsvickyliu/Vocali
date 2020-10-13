@@ -196,7 +196,7 @@ class UserInfoViewController : UIViewController, UITextFieldDelegate, UICollecti
         eyeglassesImageView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            avatarImageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: -50),
+            avatarImageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: -40),
             avatarImageView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -view.frame.height/30),
             avatarImageView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.75),
             avatarImageView.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.75),
