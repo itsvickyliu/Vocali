@@ -35,18 +35,24 @@ class ChallengeViewController: UIViewController {
     let calender = Calendar.current
     
     func setupUI(){
+        self.view.backgroundColor = UIColor(cgColor: Constants.blue)
+        
         //set up challengeLabel
         challengeLabel.font = UIFont(name: "FredokaOne-Regular", size: 30)
         challengeLabel.textColor = .white
         
         //set up suggestionLabel
         suggestionLabel.font = UIFont(name: "FredokaOne-Regular", size: 20)
-        suggestionLabel.textColor = UIColor(cgColor: Constants.blue)
+        suggestionLabel.textColor = UIColor(cgColor: Constants.red)
         
         //set up completionLabel
         completionNoticeLabel.font = UIFont(name: "FredokaOne-Regular", size: 30)
-        completionNoticeLabel.textColor = UIColor(cgColor: Constants.red)
+        completionNoticeLabel.textColor = .white
         completionNoticeLabel.alpha = 0
+        
+        //set up scrollView
+        scrollView.layer.cornerRadius = Constants.cornerR
+        scrollView.layer.masksToBounds = true
         
         //get if the check box had been checked
         let checked = defaults.bool(forKey: Constants.checkBoxKey)
@@ -137,8 +143,7 @@ class ChallengeViewController: UIViewController {
         let db = Firestore.firestore()
         var challengeArray: Array<String> = []
         var suggestionArray: Array<String> = []
-        //let randomNum = Int.random(in: 0..<30)
-        let randomNum = 18
+        let randomNum = Int.random(in: 0..<30)
         var challenge: String = ""
         //get challenges from db
         let docRef = db.collection("challenges").document("oneMonth")

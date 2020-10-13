@@ -11,13 +11,19 @@ import Firebase
 import FirebaseFirestore
 
 class UserInfoViewController : UIViewController, UITextFieldDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
-    
-    @IBOutlet weak var userIconImageView: UIImageView!
+
     @IBOutlet weak var pointsLabel: UILabel!
     private var collectionView: UICollectionView?
     private var items = Item.items
     private var cell = ItemCollectionViewCell()
     let defaults = UserDefaults.standard
+    
+    var avatarImageView: UIImageView = {
+        var imageView = UIImageView()
+        imageView.image = UIImage(named: "model")
+        imageView.contentMode = .scaleAspectFit
+        return imageView
+    }()
     
     var hairImageView: UIImageView = {
         var imageView = UIImageView()
@@ -129,6 +135,8 @@ class UserInfoViewController : UIViewController, UITextFieldDelegate, UICollecti
         
         //self.edgesForExtendedLayout = .bottom
         
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         layout.itemSize = CGSize (width: 70, height: 70)
@@ -144,13 +152,14 @@ class UserInfoViewController : UIViewController, UITextFieldDelegate, UICollecti
             return
         }
         view.addSubview(myCollection)
+        view.addSubview(avatarImageView)
         view.addSubview(faceImageView)
+        view.addSubview(hairImageView)
         view.addSubview(wingsImageView)
         view.addSubview(pantsImageView)
         view.addSubview(shirtImageView)
         view.addSubview(shoesImageView)
         view.addSubview(neckImageView)
-        view.addSubview(hairImageView)
         view.addSubview(headImageView)
         view.addSubview(eyeglassesImageView)
         
@@ -165,13 +174,17 @@ class UserInfoViewController : UIViewController, UITextFieldDelegate, UICollecti
     
     func setupUI(){
         navigationController?.navigationBar.backgroundColor = .clear
+        navigationController?.navigationBar.titleTextAttributes = [
+            .foregroundColor: UIColor.white,
+            .font: UIFont(name: "FredokaOne-Regular", size: 20)!
+        ]
         pointsLabel.text = "Points: \(Constants.points ?? 0)"
-        pointsLabel.font = UIFont(name: "FredokaOne-Regular", size: 25)
+        pointsLabel.font = UIFont(name: "NanumPen", size: 35)
         pointsLabel.textColor = UIColor(cgColor: Constants.red)
     }
     
     func addConstraints() {
-        userIconImageView.translatesAutoresizingMaskIntoConstraints = false
+        avatarImageView.translatesAutoresizingMaskIntoConstraints = false
         hairImageView.translatesAutoresizingMaskIntoConstraints = false
         faceImageView.translatesAutoresizingMaskIntoConstraints = false
         shirtImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -183,55 +196,55 @@ class UserInfoViewController : UIViewController, UITextFieldDelegate, UICollecti
         eyeglassesImageView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            userIconImageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: -50),
-            userIconImageView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -view.frame.height/30),
-            userIconImageView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.75),
-            userIconImageView.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.75),
+            avatarImageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: -50),
+            avatarImageView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -view.frame.height/30),
+            avatarImageView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.75),
+            avatarImageView.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.75),
             
-            hairImageView.centerXAnchor.constraint(equalTo: userIconImageView.centerXAnchor),
-            hairImageView.centerYAnchor.constraint(equalTo: userIconImageView.centerYAnchor),
-            hairImageView.topAnchor.constraint(equalTo: userIconImageView.topAnchor),
-            hairImageView.leftAnchor.constraint(equalTo: userIconImageView.leftAnchor),
+            hairImageView.centerXAnchor.constraint(equalTo: avatarImageView.centerXAnchor),
+            hairImageView.centerYAnchor.constraint(equalTo: avatarImageView.centerYAnchor),
+            hairImageView.topAnchor.constraint(equalTo: avatarImageView.topAnchor),
+            hairImageView.leftAnchor.constraint(equalTo: avatarImageView.leftAnchor),
             
-            faceImageView.centerXAnchor.constraint(equalTo: userIconImageView.centerXAnchor),
-            faceImageView.centerYAnchor.constraint(equalTo: userIconImageView.centerYAnchor),
-            faceImageView.topAnchor.constraint(equalTo: userIconImageView.topAnchor),
-            faceImageView.leftAnchor.constraint(equalTo: userIconImageView.leftAnchor),
+            faceImageView.centerXAnchor.constraint(equalTo: avatarImageView.centerXAnchor),
+            faceImageView.centerYAnchor.constraint(equalTo: avatarImageView.centerYAnchor),
+            faceImageView.topAnchor.constraint(equalTo: avatarImageView.topAnchor),
+            faceImageView.leftAnchor.constraint(equalTo: avatarImageView.leftAnchor),
             
-            shirtImageView.centerXAnchor.constraint(equalTo: userIconImageView.centerXAnchor),
-            shirtImageView.centerYAnchor.constraint(equalTo: userIconImageView.centerYAnchor),
-            shirtImageView.topAnchor.constraint(equalTo: userIconImageView.topAnchor),
-            shirtImageView.leftAnchor.constraint(equalTo: userIconImageView.leftAnchor),
+            shirtImageView.centerXAnchor.constraint(equalTo: avatarImageView.centerXAnchor),
+            shirtImageView.centerYAnchor.constraint(equalTo: avatarImageView.centerYAnchor),
+            shirtImageView.topAnchor.constraint(equalTo: avatarImageView.topAnchor),
+            shirtImageView.leftAnchor.constraint(equalTo: avatarImageView.leftAnchor),
             
-            pantsImageView.centerXAnchor.constraint(equalTo: userIconImageView.centerXAnchor),
-            pantsImageView.centerYAnchor.constraint(equalTo: userIconImageView.centerYAnchor),
-            pantsImageView.topAnchor.constraint(equalTo: userIconImageView.topAnchor),
-            pantsImageView.leftAnchor.constraint(equalTo: userIconImageView.leftAnchor),
+            pantsImageView.centerXAnchor.constraint(equalTo: avatarImageView.centerXAnchor),
+            pantsImageView.centerYAnchor.constraint(equalTo: avatarImageView.centerYAnchor),
+            pantsImageView.topAnchor.constraint(equalTo: avatarImageView.topAnchor),
+            pantsImageView.leftAnchor.constraint(equalTo: avatarImageView.leftAnchor),
             
-            shoesImageView.centerXAnchor.constraint(equalTo: userIconImageView.centerXAnchor),
-            shoesImageView.centerYAnchor.constraint(equalTo: userIconImageView.centerYAnchor),
-            shoesImageView.topAnchor.constraint(equalTo: userIconImageView.topAnchor),
-            shoesImageView.leftAnchor.constraint(equalTo: userIconImageView.leftAnchor),
+            shoesImageView.centerXAnchor.constraint(equalTo: avatarImageView.centerXAnchor),
+            shoesImageView.centerYAnchor.constraint(equalTo: avatarImageView.centerYAnchor),
+            shoesImageView.topAnchor.constraint(equalTo: avatarImageView.topAnchor),
+            shoesImageView.leftAnchor.constraint(equalTo: avatarImageView.leftAnchor),
             
-            headImageView.centerXAnchor.constraint(equalTo: userIconImageView.centerXAnchor),
-            headImageView.centerYAnchor.constraint(equalTo: userIconImageView.centerYAnchor),
-            headImageView.topAnchor.constraint(equalTo: userIconImageView.topAnchor),
-            headImageView.leftAnchor.constraint(equalTo: userIconImageView.leftAnchor),
+            headImageView.centerXAnchor.constraint(equalTo: avatarImageView.centerXAnchor),
+            headImageView.centerYAnchor.constraint(equalTo: avatarImageView.centerYAnchor),
+            headImageView.topAnchor.constraint(equalTo: avatarImageView.topAnchor),
+            headImageView.leftAnchor.constraint(equalTo: avatarImageView.leftAnchor),
             
-            neckImageView.centerXAnchor.constraint(equalTo: userIconImageView.centerXAnchor),
-            neckImageView.centerYAnchor.constraint(equalTo: userIconImageView.centerYAnchor),
-            neckImageView.topAnchor.constraint(equalTo: userIconImageView.topAnchor),
-            neckImageView.leftAnchor.constraint(equalTo: userIconImageView.leftAnchor),
+            neckImageView.centerXAnchor.constraint(equalTo: avatarImageView.centerXAnchor),
+            neckImageView.centerYAnchor.constraint(equalTo: avatarImageView.centerYAnchor),
+            neckImageView.topAnchor.constraint(equalTo: avatarImageView.topAnchor),
+            neckImageView.leftAnchor.constraint(equalTo: avatarImageView.leftAnchor),
             
-            wingsImageView.centerXAnchor.constraint(equalTo: userIconImageView.centerXAnchor),
-            wingsImageView.centerYAnchor.constraint(equalTo: userIconImageView.centerYAnchor),
-            wingsImageView.topAnchor.constraint(equalTo: userIconImageView.topAnchor),
-            wingsImageView.leftAnchor.constraint(equalTo: userIconImageView.leftAnchor),
+            wingsImageView.centerXAnchor.constraint(equalTo: avatarImageView.centerXAnchor),
+            wingsImageView.centerYAnchor.constraint(equalTo: avatarImageView.centerYAnchor),
+            wingsImageView.topAnchor.constraint(equalTo: avatarImageView.topAnchor),
+            wingsImageView.leftAnchor.constraint(equalTo: avatarImageView.leftAnchor),
             
-            eyeglassesImageView.centerXAnchor.constraint(equalTo: userIconImageView.centerXAnchor),
-            eyeglassesImageView.centerYAnchor.constraint(equalTo: userIconImageView.centerYAnchor),
-            eyeglassesImageView.topAnchor.constraint(equalTo: userIconImageView.topAnchor),
-            eyeglassesImageView.leftAnchor.constraint(equalTo: userIconImageView.leftAnchor)
+            eyeglassesImageView.centerXAnchor.constraint(equalTo: avatarImageView.centerXAnchor),
+            eyeglassesImageView.centerYAnchor.constraint(equalTo: avatarImageView.centerYAnchor),
+            eyeglassesImageView.topAnchor.constraint(equalTo: avatarImageView.topAnchor),
+            eyeglassesImageView.leftAnchor.constraint(equalTo: avatarImageView.leftAnchor)
         ])
     }
     
