@@ -108,6 +108,7 @@ class MainViewController : UIViewController, UNUserNotificationCenterDelegate {
         let request = UNNotificationRequest(identifier: "583a086e-db3e-11ea-87d0-0242ac130003", content: content, trigger: trigger)
 
         // add our notification request
+        center.removeAllPendingNotificationRequests()
         center.add(request)
     }
     
