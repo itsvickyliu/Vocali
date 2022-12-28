@@ -148,9 +148,9 @@ class ChallengeViewController: UIViewController {
         guard let lastRefreshDate = defaults.object(forKey: defaultsKey) as? Date else {
             return true
         }
-        
+
         //if it's not the same day
-        if let diff = calender.dateComponents([.day], from: lastRefreshDate, to: Date()).day, diff >= 1 {
+        if let diff = calender.dateComponents([.day], from: lastRefreshDate, to: Date()).day, abs(diff) >= 1 {
             return true
         } else {
             return false
