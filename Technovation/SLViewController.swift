@@ -10,7 +10,7 @@ import UIKit
 import FirebaseAuth
 import Firebase
 
-class SLViewController : UIViewController, UIGestureRecognizerDelegate{
+class SLViewController : UIViewController, UIGestureRecognizerDelegate, UITextFieldDelegate {
     
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
@@ -24,7 +24,15 @@ class SLViewController : UIViewController, UIGestureRecognizerDelegate{
         self.view.addGestureRecognizer(tap)
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         formatUI()
+        formatGesture()
         errorLabel.alpha = 0
+        
+        emailTextField.delegate = self
+        passwordTextField.delegate = self
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(sender:)), name: UIResponder.keyboardWillShowNotification, object: nil);
+
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(sender:)), name: UIResponder.keyboardWillHideNotification, object: nil);
     }
     
     func formatUI(){
@@ -38,10 +46,34 @@ class SLViewController : UIViewController, UIGestureRecognizerDelegate{
         self.navigationItem.leftBarButtonItem = leftButton
     }
     
+    func formatGesture() {
+        let rightRecognizer = UISwipeGestureRecognizer(target: self, action:
+        #selector(executeSwipe(_:)))
+        rightRecognizer.direction = .right
+        self.view.addGestureRecognizer(rightRecognizer)
+    }
+    
+    @objc func executeSwipe(_ sender: UISwipeGestureRecognizer) {
+        popToPrevious()
+    }
+    
+    func textFieldShouldReturn(_ scoreText: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return true
+    }
+    
     @objc private func popToPrevious() {
         navigationController?.popViewController(animated: true)
     }
     
+    @objc func keyboardWillShow(sender: NSNotification) {
+        self.view.frame.origin.y = -70 // Move view 150 points upward
+    }
+
+    @objc func keyboardWillHide(sender: NSNotification) {
+         self.view.frame.origin.y = 0 // Move view to original position
+    }
+
     @IBAction func didCreateAccount(_ sender: Any) {
         // Validate the fields
         let error = validateFields()
@@ -70,7 +102,8 @@ class SLViewController : UIViewController, UIGestureRecognizerDelegate{
                         "email": email,
                         "pw": password,
                         "points": 0,
-//                        "avatarName": "Give your avatar a name!"
+                        "purchasedItem": ["face1", "head1"],
+                        "wearingItem": ["face" : "face1", "head" : "head1"]
                     ]) { err in
                         if let err = err {
                             print("Error writing document: \(err)")
@@ -81,6 +114,8 @@ class SLViewController : UIViewController, UIGestureRecognizerDelegate{
                     //save data locally for later use
                     Constants.points = 0
                     Constants.uID = result!.user.uid
+                    Constants.purchasedItem = ["face1", "head1"]
+                    Constants.wearingItem = ["face" : "face1", "head" : "head1"]
                     
                     self.transitionToHome()
                 }

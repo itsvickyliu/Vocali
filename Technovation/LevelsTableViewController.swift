@@ -25,18 +25,8 @@ class LevelsTableViewController: UITableViewController{
         tableView.backgroundView = UIImageView(image: UIImage(named: "gradient"))
         super.viewDidLoad()
         self.registerTableViewCells()
-    }
+    }    
     
-    @IBAction func logOut(_ sender: Any) {
-        let firebaseAuth = Auth.auth()
-        do {
-          try firebaseAuth.signOut()
-        } catch let signOutError as NSError {
-          print ("Error signing out: %@", signOutError)
-        }
-    }
-    
-
     func registerTableViewCells(){
         let levelCell = UINib(nibName: "LevelTableViewCell", bundle: nil)
         self.tableView.register(levelCell, forCellReuseIdentifier: "LevelCell")
